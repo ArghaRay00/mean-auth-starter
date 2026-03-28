@@ -16,9 +16,7 @@ module.exports.register = (req, res, next) => {
         if (!err)
         {
             res.send(doc);
-            sendMail(user,info=>{
-                console.log(`Mail has been sent and id is ${info.messageId}`);
-            });
+            sendMail(user, info => {});
         }
             
         else {
@@ -54,23 +52,24 @@ module.exports.userProfile = (req, res, next) =>{
     );
 }
 
-async function sendMail(user,callback){
-    let transporter=nodemailer.createTransport({
-        host:"smtp.gmail.com",
-        port:587,
-        secure :false,
-        auth:{
-            user: 'sender@gmail.com',
-            pass: 'SenderPassword'
+async function sendMail(user, callback) {
+    let transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || 'smtp.gmail.com',
+        port: parseInt(process.env.SMTP_PORT) || 587,
+        secure: false,
+        auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS
         }
     });
 
     const mailOptions = {
-        from: 'sender@gmail.com', // sender address
-        to: user.email, // list of receivers
-        subject: 'Registration successful', // Subject line
-        html: `<p>Hi ${user.fullName} Thank you for registering!</p>`// plain text body
-      };
-      let info =await transporter.sendMail(mailOptions);
-      callback(info);
+        from: process.env.SMTP_USER,
+        to: user.email,
+        subject: 'Registration successful',
+        html: `<p>Hi ${user.fullName}, Thank you for registering!</p>`
+    };
+
+    let info = await transporter.sendMail(mailOptions);
+    callback(info);
 }

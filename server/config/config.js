@@ -1,7 +1,10 @@
-// check env.
-var env = process.env.NODE_ENV || 'development';
-// fetch env. config
-var config = require('./config.json');
-var envConfig = config[env];
-// add env. config values to process.env
-Object.keys(envConfig).forEach(key => process.env[key] = envConfig[key]);
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    require('dotenv').config({ path: __dirname + '/../.env' });
+  } catch {
+    // dotenv not installed or .env not found — fall back to config.json
+    var config = require('./config.json');
+    var envConfig = config[process.env.NODE_ENV || 'development'];
+    Object.keys(envConfig).forEach(key => process.env[key] = envConfig[key]);
+  }
+}

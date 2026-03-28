@@ -1,14 +1,14 @@
 {
     "development": {
         "PORT": 3000,
-        "MONGODB_URI": "mongodb://localhost:27017/db",
-        "JWT_SECRET": "SECRET#123",
+        "MONGODB_URI": "mongodb://localhost:27017/mean-auth-db",
+        "JWT_SECRET": "change-me-use-env-file",
         "JWT_EXP": "10m"
     },
     "production": {
         "PORT": 80,
-        "MONGODB_URI": "mongodb://xxxxx/DB_Name",
-        "JWT_SECRET": "SECRET#123",
+        "MONGODB_URI": "mongodb://your-prod-host/your-db",
+        "JWT_SECRET": "change-me-use-env-file",
         "JWT_EXP": "2m"
     }
 }
